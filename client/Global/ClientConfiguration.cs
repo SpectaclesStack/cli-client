@@ -11,7 +11,8 @@ namespace client.Global
         public const string TokenEndpoint = "https://github.com/login/oauth/access_token";
         public const string Scope = "read:user";
         public const string GrantType = "urn:ietf:params:oauth:grant-type:device_code";
-        public const string ApiDomain = "https://localhost:5001";
+        public const string ApiDomain = "http://localhost:5033";
+        //public const string ApiDomain = "https://localhost:5001";
 
         public static string accessToken { get; set; }
         public static string user { get; set; }

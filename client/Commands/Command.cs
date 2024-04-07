@@ -78,7 +78,22 @@ namespace client.Commands
 
                         ClientConfiguration.accessToken = $"Bearer {queryParameters["access_token"]}";
                         success = true;
+
+                        HttpRequestMessage userInfoRequest = new HttpRequestMessage(
+                        HttpMethod.Get,
+                        $"https://api.github.com/user"
+                        );
+                        userInfoRequest.Headers.Add("Authorization", ClientConfiguration.accessToken);
+                        userInfoRequest.Headers.Add("User-Agent", "SpectaclesStack");
+                        HttpResponseMessage response = httpClient.Send(userInfoRequest);;
+
+                        ClientConfiguration.user = response.Content.ReadAsStringAsync().Result.Split(":")[1].Split(",")[0]; //messy
+
+                        //Console.WriteLine(response);
+                        //Console.WriteLine(response.Content.ReadAsStringAsync().Result);
                     }
+
+
 
                 }
             }

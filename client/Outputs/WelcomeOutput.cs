@@ -11,12 +11,12 @@ namespace client.Outputs
     {
         public static void PrintWelcomeMessage()
         {
-            Console.WriteLine("Welcome to SpectacleStack\n");
+            Console.WriteLine("Welcome to SpectacleStack");
         }
 
         public static void PrintUserOptions()
         {
-            Console.WriteLine("\nChoose an option");
+            Console.WriteLine($"\nHi {ClientConfiguration.user ?? "\"user\""}. Choose an option");
             Console.WriteLine("------------------------------------------------------------");
             foreach (var command in ClientConfiguration.ValidCommands)
             {
