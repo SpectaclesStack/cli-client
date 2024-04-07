@@ -81,9 +81,6 @@ namespace client.Commands
                     }
 
                 }
-
-                Console.WriteLine("Authentication successful!");
-
             }
 
             return success;

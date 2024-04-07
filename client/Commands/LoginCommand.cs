@@ -19,7 +19,7 @@ namespace client.Commands
         }
         public override bool execute()
         {
-            Console.WriteLine("\nLogging in....\n");
+            Console.WriteLine("Logging in....\n");
 
             try
             {
@@ -39,7 +39,7 @@ namespace client.Commands
                             HttpResponseMessage response = httpClient.Send(request);
                             if (response.StatusCode.Equals(HttpStatusCode.OK))
                             {
-                                Console.WriteLine("Successfully logged in!\n");
+                                Console.WriteLine("Successfully logged in!");
                                 return true; 
                             }
                             else
@@ -51,18 +51,19 @@ namespace client.Commands
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine("An error occured while logging in....\n");
+                        Console.WriteLine("An error occured while logging in....");
+                        ClientConfiguration.accessToken = "";
                         return true;
                     }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine("An error occured while authenticaing...\n");
+                Console.WriteLine("An error occured while authenticaing...");
                 return true;
             }
 
-            Console.WriteLine("\nLogin sucessful...\n");
+            Console.WriteLine("Login sucessful...");
             return true;
         }
     }
