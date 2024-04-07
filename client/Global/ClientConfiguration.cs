@@ -18,7 +18,8 @@ namespace client.Global
 
         public static List<Command> ValidCommands = [
             new LoginCommand(),
-            new LogoutCommand()
+            new LogoutCommand(),
+            new QuitCommand()
         ];
     }
 }

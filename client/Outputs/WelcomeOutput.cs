@@ -17,22 +17,22 @@ namespace client.Outputs
         public static void PrintUserOptions()
         {
             Console.WriteLine("\nChoose an option");
+            Console.WriteLine("------------------------------------------------------------");
             foreach (var command in ClientConfiguration.ValidCommands)
             {
-                if (ClientConfiguration.accessToken == null && command.Flag == "X")
+                if ((ClientConfiguration.accessToken == null || ClientConfiguration.accessToken.Length == 0) && command.Flag == "X")
                     continue;
                 if (ClientConfiguration.accessToken != null && ClientConfiguration.accessToken.Length > 0 && command.Flag == "L")
                     continue;
                 Console.WriteLine($"{command.Flag} - {command.Name}");
             }
-            Console.WriteLine();
+            Console.WriteLine("------------------------------------------------------------");
         }
 
         public static string PrintInputPrompt()
         {
-            Console.Write("Selection: ");
+            Console.Write("> ");
             var input = Console.ReadLine();
-            Console.WriteLine();
             return input.ToUpper();
         }
     }

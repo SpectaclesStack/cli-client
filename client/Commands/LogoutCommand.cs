@@ -16,7 +16,7 @@ namespace client.Commands
         public override bool execute()
         {
             ClientConfiguration.accessToken = "";
-            Console.WriteLine("\nSuccessfully Logged Out!");
+            Console.WriteLine("Successfully Logged Out!");
             return true;
         }
     }
