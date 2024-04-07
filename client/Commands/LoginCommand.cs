@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -35,6 +36,12 @@ namespace client.Commands
                                 );
                             request.Headers.Add("Authorization", ClientConfiguration.accessToken);
 
+                            string jsonBody = $"{{\"userId\":\"0\",\"email\":\"dummyemail@gmail.com\",\"userName\":{ClientConfiguration.user}, \"createAt\":null}}";
+
+                             Console.WriteLine(jsonBody);
+
+                            request.Content = new StringContent(jsonBody.ToString(), Encoding.UTF8, "application/json");
+
 
                             HttpResponseMessage response = httpClient.Send(request);
                             if (response.StatusCode.Equals(HttpStatusCode.OK))
@@ -53,6 +60,7 @@ namespace client.Commands
                     {
                         Console.WriteLine("An error occured while logging in....");
                         ClientConfiguration.accessToken = "";
+                        ClientConfiguration.user = "user";
                         return true;
                     }
                 }
@@ -60,6 +68,8 @@ namespace client.Commands
             catch (Exception ex)
             {
                 Console.WriteLine("An error occured while authenticaing...");
+                ClientConfiguration.accessToken = "";
+                ClientConfiguration.user = "user";
                 return true;
             }
 
