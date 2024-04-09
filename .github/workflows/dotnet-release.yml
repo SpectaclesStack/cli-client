@@ -23,6 +23,7 @@ jobs:
     - name: Change directory
       run: |
         cd client
+        ls
         
     - name: Restore dependencies
       run: dotnet restore
@@ -36,11 +37,21 @@ jobs:
     - name: Publish project
       run: dotnet publish -c Release --output cli-app
 
+    - name: pwd directory
+      run: |
+        echo "Current Directory: $PWD"
+        dir
+        
     - name: Zip publish folder
       run: |
         Add-Type -AssemblyName System.IO.Compression.FileSystem
         [System.IO.Compression.ZipFile]::CreateFromDirectory('cli-app', 'cli-app.zip')
 
+    - name: pwd directory
+      run: |
+        echo "Current Directory: $PWD"
+        dir
+        
     - name: Create Release
       id: create_release
       uses: actions/create-release@latest
