@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Web;
 using System.Xml.Linq;
@@ -39,10 +40,8 @@ namespace client.Commands
 
             using (HttpClient httpClient = new HttpClient())
             {
-                HttpRequestMessage deviceCodeRequest = new HttpRequestMessage(
-                    HttpMethod.Post,
-                    $"{ClientConfiguration.AuthorizationEndpoint}?client_id={ClientConfiguration.ClientId}&scope={ClientConfiguration.Scope}"
-                    );
+                HttpRequestMessage deviceCodeRequest = new HttpRequestMessage(HttpMethod.Post,
+                    $"{ClientConfiguration.AuthorizationEndpoint}?client_id={ClientConfiguration.ClientId}&scope={ClientConfiguration.Scope}");
 
                 HttpResponseMessage deviceCodeResponse = httpClient.Send(deviceCodeRequest);
                 deviceCodeResponse.EnsureSuccessStatusCode();
@@ -62,10 +61,8 @@ namespace client.Commands
                 {
                     Thread.Sleep(10000);
 
-                    HttpRequestMessage accessTokenRequest = new HttpRequestMessage(
-                        HttpMethod.Post,
-                        $"{ClientConfiguration.TokenEndpoint}?client_id={ClientConfiguration.ClientId}&device_code={deviceCode}&grant_type={ClientConfiguration.GrantType}"
-                        );
+                    HttpRequestMessage accessTokenRequest = new HttpRequestMessage(HttpMethod.Post,
+                        $"{ClientConfiguration.TokenEndpoint}?client_id={ClientConfiguration.ClientId}&device_code={deviceCode}&grant_type={ClientConfiguration.GrantType}");
 
                     HttpResponseMessage accessTokenResponse = httpClient.Send(accessTokenRequest);
                     accessTokenResponse.EnsureSuccessStatusCode();
@@ -77,24 +74,24 @@ namespace client.Commands
                         queryParameters = HttpUtility.ParseQueryString(accessTokenResponseBody);
 
                         ClientConfiguration.accessToken = $"Bearer {queryParameters["access_token"]}";
-                        success = true;
 
-                        HttpRequestMessage userInfoRequest = new HttpRequestMessage(
-                        HttpMethod.Get,
-                        $"https://api.github.com/user"
-                        );
+                        HttpRequestMessage userInfoRequest = new HttpRequestMessage(HttpMethod.Get, $"https://api.github.com/user");
+
                         userInfoRequest.Headers.Add("Authorization", ClientConfiguration.accessToken);
                         userInfoRequest.Headers.Add("User-Agent", "SpectaclesStack");
-                        HttpResponseMessage response = httpClient.Send(userInfoRequest);;
 
-                        ClientConfiguration.user = response.Content.ReadAsStringAsync().Result.Split(":")[1].Split(",")[0]; //messy
+                        HttpResponseMessage response = httpClient.Send(userInfoRequest);
 
-                        //Console.WriteLine(response);
-                        //Console.WriteLine(response.Content.ReadAsStringAsync().Result);
+                        using (JsonDocument doc = JsonDocument.Parse(response.Content.ReadAsStringAsync().Result))
+                        {
+                            JsonElement root = doc.RootElement;
+
+                            ClientConfiguration.user = root.GetProperty("login").GetString();
+
+                        }
+
+                        success = true;
                     }
-
-
-
                 }
             }
 

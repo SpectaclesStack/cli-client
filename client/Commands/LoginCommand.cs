@@ -1,11 +1,14 @@
 ﻿using client.Global;
+using client.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Reflection;
 using System.Text;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using System.Web;
@@ -36,9 +39,18 @@ namespace client.Commands
                                 );
                             request.Headers.Add("Authorization", ClientConfiguration.accessToken);
 
-                            string jsonBody = $"{{\"userId\":\"0\",\"email\":\"dummyemail@gmail.com\",\"userName\":{ClientConfiguration.user}, \"createAt\":null}}";
+                            User user = new User();
 
-                             Console.WriteLine(jsonBody);
+                            user.UserName = ClientConfiguration.user;
+                            user.CreateAt = DateTime.Now;
+
+                            string jsonBody = JsonSerializer.Serialize(user, new JsonSerializerOptions
+                            {
+                                WriteIndented = false, // Optional: Set to true for pretty-printing
+                                IgnoreNullValues = false // Optional: Set to false to include null values
+                            });
+
+                            Console.WriteLine(jsonBody);
 
                             request.Content = new StringContent(jsonBody.ToString(), Encoding.UTF8, "application/json");
 
