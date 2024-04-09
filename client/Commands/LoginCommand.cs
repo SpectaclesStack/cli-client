@@ -42,7 +42,7 @@ namespace client.Commands
                             User user = new User();
 
                             user.UserName = ClientConfiguration.user;
-                            user.CreateAt = DateTime.Now;
+                            user.CreateAt = DateTime.UtcNow;
 
                             string jsonBody = JsonSerializer.Serialize(user, new JsonSerializerOptions
                             {
