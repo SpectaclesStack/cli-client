@@ -4,7 +4,7 @@ namespace client.Global
 {
     public static class ClientConfiguration
     {
-        public const string ClientId = "";
+        public static string ClientId = Environment.GetEnvironmentVariable("CLIENT_ID") ?? "";
         public const string RedirectUri = "http://localhost";
         public const string AuthorizationEndpoint = "https://github.com/login/device/code";
         public const string TokenEndpoint = "https://github.com/login/oauth/access_token";
