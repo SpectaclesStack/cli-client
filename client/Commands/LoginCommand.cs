@@ -58,6 +58,9 @@ namespace client.Commands
                             HttpResponseMessage response = httpClient.Send(request);
                             if (response.StatusCode.Equals(HttpStatusCode.OK))
                             {
+                                var responseUser = JsonSerializer.Deserialize<User>(response.Content.ReadAsStringAsync().Result);
+                                ClientConfiguration.UserInfo = user;
+
                                 Console.WriteLine("Successfully logged in!");
                                 return true; 
                             }

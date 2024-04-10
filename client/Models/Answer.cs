@@ -7,20 +7,21 @@ using System.Threading.Tasks;
 
 namespace client.Models
 {
-    public class User
+    public class Answer
     {
-        [JsonPropertyName("userId")]
+        [JsonPropertyName("questionId")]
+        public int QuestionId { get; set; }
+
+        [JsonPropertyName("answerId")]
+        public int AnswerId { get; set; }
+
+        [JsonPropertyName("userid")]
         public int UserId { get; set; }
 
-        [JsonPropertyName("userName")]
-        public string UserName { get; set; }
+        [JsonPropertyName("answer")]
+        public string AnswerString { get; set; }
 
         [JsonPropertyName("createAt")]
         public DateTime CreateAt { get; set; }
-
-        public override string ToString()
-        {
-            return $"User ID: {UserId}, Username: {UserName}";
-        }
     }
 }
