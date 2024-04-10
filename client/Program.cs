@@ -9,7 +9,7 @@ namespace client
         private CommandHandler _handler = new();
         private void start()
         {
-            _handler.Commands = ClientConfiguration.ValidCommands;
+            
 
             WelcomeOutput.PrintWelcomeMessage();
 
@@ -17,7 +17,11 @@ namespace client
 
             while (continueExecution)
             {
-                WelcomeOutput.PrintUserOptions();
+                _handler.Commands = ClientConfiguration.currentCommands;
+
+                
+                WelcomeOutput.PrintUserOptions(_handler.Commands);
+                
 
                 var userSelection = WelcomeOutput.PrintInputPrompt();
 

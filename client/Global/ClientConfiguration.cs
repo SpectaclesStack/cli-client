@@ -1,4 +1,5 @@
 ﻿using client.Commands;
+using client.Models;
 
 namespace client.Global
 {
@@ -11,9 +12,13 @@ namespace client.Global
         public const string Scope = "read:user";
         public const string GrantType = "urn:ietf:params:oauth:grant-type:device_code";
         public const string ApiDomain = "http://3.250.62.135:5033";
+        public static bool printdefaultCommandOptions = true;
 
         public static string accessToken { get; set; }
         public static string user { get; set; }
+
+        public static User UserInfo { get; set; }
+
 
         public static List<Command> ValidCommands = [
             new LoginCommand(),
@@ -22,5 +27,47 @@ namespace client.Global
             new ViewQuestionsCommand(),
             new PostQuestionCommand(),
         ];
+
+        public static List<Command> defaultcommands = [
+            new LoginCommand(),
+            new LogoutCommand(),
+            new QuitCommand(),
+            new ViewQuestionsCommand(),
+            new PostQuestionCommand(),
+        ];
+
+        public static List<Command> QuestionsScreenCommands = [
+            new LogoutCommand(),
+            new QuitCommand(),
+            new PostQuestionCommand(),
+            //new SelectQuestion(),
+        ];
+
+        public static List<Command> QuestionScreenCommands = [
+            new LogoutCommand(),
+            new QuitCommand(),
+            new PostQuestionCommand(),
+            //new AnswerQuestion(),
+        ];
+
+        public static List<Command> HomeScreenCommands = [
+            new LogoutCommand(),
+            new QuitCommand(),
+            new ViewQuestionsCommand(),
+            new PostQuestionCommand(),
+        ];
+
+        public static List<Command> LogoutQuit = [
+            new LoginCommand(),
+            new LogoutCommand(),
+            new QuitCommand(),
+        ];
+
+
+        public static List<Command> currentCommands = defaultcommands;
+
+        public static List<Question> Questions = new();
+
+        public static Dictionary<int, Question> questionsMap = new();
     }
 }

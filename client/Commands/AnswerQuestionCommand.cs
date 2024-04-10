@@ -10,10 +10,12 @@ using System.Threading.Tasks;
 
 namespace client.Commands
 {
-    public class PostQuestionCommand : Command
+    public class AnswerQuestionCommand : Command
     {
-        public PostQuestionCommand() : base("Post a Question", "P")
+        private int _questionId;
+        public AnswerQuestionCommand(int questionId) : base("Answer Question", "A")
         {
+            _questionId = questionId;
         }
 
         public override bool execute()
@@ -22,13 +24,14 @@ namespace client.Commands
             {
                 HttpRequestMessage request = new HttpRequestMessage(
                                 HttpMethod.Post,
-                                $"{ClientConfiguration.ApiDomain}/api/questions"
+                                $"{ClientConfiguration.ApiDomain}/api/answers"
                                 );
                 //request.Headers.Add("Authorization", ClientConfiguration.accessToken);
 
-                Question question = WelcomeOutput.GetQuestion();
+                Answer answer = WelcomeOutput.GetAnswer();
+                answer.QuestionId = _questionId;
 
-                string jsonBody = JsonSerializer.Serialize(question, new JsonSerializerOptions
+                string jsonBody = JsonSerializer.Serialize(answer, new JsonSerializerOptions
                 {
                     WriteIndented = false, // Optional: Set to true for pretty-printing
                     IgnoreNullValues = false // Optional: Set to false to include null values
