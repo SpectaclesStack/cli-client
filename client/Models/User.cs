@@ -15,7 +15,7 @@ namespace client.Models
         [JsonPropertyName("userName")]
         public string UserName { get; set; }
 
-        [JsonPropertyName("createAt")]
+        [JsonPropertyName("dateCreated")]
         public DateTime CreateAt { get; set; }
 
         public override string ToString()
