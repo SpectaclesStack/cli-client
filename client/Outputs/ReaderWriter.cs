@@ -9,23 +9,28 @@ using System.Threading.Tasks;
 
 namespace client.Outputs
 {
-    internal static class WelcomeOutput
+    internal static class ReaderWriter
     {
         public static void PrintWelcomeMessage()
         {
+            ClientConfiguration.User = new() { UserName = "User" };
             Console.WriteLine("Welcome to SpectacleStack");
         }
 
         public static void PrintUserOptions(List<Command> commands)
         {
-            Console.WriteLine($"\nHi {ClientConfiguration.user ?? "\"user\""}. Choose an option");
+            Console.WriteLine($"\nHi {ClientConfiguration.User.UserName}. Choose an option.");
             Console.WriteLine("------------------------------------------------------------");
             foreach (var command in commands)
             {
                 if ((ClientConfiguration.accessToken == null || ClientConfiguration.accessToken.Length == 0) && command.Flag == "X")
+                {
                     continue;
+                }
                 if (ClientConfiguration.accessToken != null && ClientConfiguration.accessToken.Length > 0 && command.Flag == "L")
+                {
                     continue;
+                }
                 Console.WriteLine($"{command.Flag} - {command.Name}");
             }
             Console.WriteLine("------------------------------------------------------------");
@@ -66,7 +71,7 @@ namespace client.Outputs
             User user = new User();
 
             user.UserId = 46;
-            user.UserName = ClientConfiguration.user == null ? $"new usr {new Random().Next(10, 100)}" : ClientConfiguration.user;
+            user.UserName = ClientConfiguration.User.UserName == null ? $"new usr {new Random().Next(10, 100)}" : ClientConfiguration.User.UserName;
             user.CreateAt = DateTime.UtcNow;
 
             Question question = new Question();
@@ -93,7 +98,7 @@ namespace client.Outputs
             Answer answwer = new()
             {
                 AnswerId = 0,
-                UserId = ClientConfiguration.UserInfo == null ? 7 : ClientConfiguration.UserInfo.UserId,
+                UserId = ClientConfiguration.User == null ? 7 : ClientConfiguration.User.UserId,
                 QuestionId = 0,
                 AnswerString = answer,
                 CreateAt = DateTime.UtcNow

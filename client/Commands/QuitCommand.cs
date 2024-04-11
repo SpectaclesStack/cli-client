@@ -13,10 +13,10 @@ namespace client.Commands
         {
         }
 
-        public override async Task<bool> execute()
+        public override Task<bool> Execute()
         {
-            Console.WriteLine($"Bye {ClientConfiguration.user}.");
-            return false;
+            Console.WriteLine($"Bye {ClientConfiguration.User.UserName}.");
+            return Task.FromResult(false);
         }
     }
 }

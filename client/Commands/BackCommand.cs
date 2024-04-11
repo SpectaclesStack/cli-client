@@ -12,7 +12,7 @@ namespace client.Commands
         {
         }
 
-        public override async Task<bool> execute()
+        public override Task<bool> Execute()
         {
             throw new NotImplementedException();
         }

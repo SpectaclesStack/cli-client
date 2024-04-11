@@ -18,16 +18,16 @@ namespace client.Commands
             _questionId = questionId;
         }
 
-        public override async Task<bool> execute()
+        public override async Task<bool> Execute()
         {
             try
             {
                 using (HttpClient httpClient = new HttpClient())
                 {
                     HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, $"{ClientConfiguration.ApiDomain}/api/answers");
-                    //request.Headers.Add("Authorization", ClientConfiguration.accessToken);
+                    request.Headers.Add("Authorization", ClientConfiguration.accessToken);
 
-                    Answer answer = WelcomeOutput.GetAnswer();
+                    Answer answer = ReaderWriter.GetAnswer();
                     answer.QuestionId = ClientConfiguration.questionsMap[_questionId].QuestionId;
 
                     string jsonBody = JsonSerializer.Serialize(answer, new JsonSerializerOptions
@@ -47,7 +47,7 @@ namespace client.Commands
                     }
 
                     HttpRequestMessage requestAnswers = new HttpRequestMessage(HttpMethod.Get, $"{ClientConfiguration.ApiDomain}/api/Answers");
-                    //requestAnswers.Headers.Add("Authorization", ClientConfiguration.accessToken);
+                    requestAnswers.Headers.Add("Authorization", ClientConfiguration.accessToken);
 
                     HttpResponseMessage responseAnswers = await httpClient.SendAsync(requestAnswers);
 
@@ -78,7 +78,7 @@ namespace client.Commands
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred: {ex.Message}");
+                Console.WriteLine($"Error: Something went wrong posting answer.");
                 return true;
 
             }

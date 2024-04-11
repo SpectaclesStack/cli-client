@@ -21,7 +21,7 @@ namespace client.Commands
         {
             
         }
-        public override async Task<bool> execute()
+        public override async Task<bool> Execute()
         {
             Console.WriteLine("Logging in....\n");
 
@@ -39,18 +39,16 @@ namespace client.Commands
                                 );
                             request.Headers.Add("Authorization", ClientConfiguration.accessToken);
 
-                            User user = new User();
+                            User user = new();
 
-                            user.UserName = ClientConfiguration.user;
+                            user.UserName = ClientConfiguration.User.UserName;
                             user.CreateAt = DateTime.UtcNow;
 
                             string jsonBody = JsonSerializer.Serialize(user, new JsonSerializerOptions
                             {
-                                WriteIndented = false, // Optional: Set to true for pretty-printing
-                                IgnoreNullValues = false // Optional: Set to false to include null values
+                                WriteIndented = false,
+                                IgnoreNullValues = false
                             });
-
-                            Console.WriteLine(jsonBody);
 
                             request.Content = new StringContent(jsonBody.ToString(), Encoding.UTF8, "application/json");
 
@@ -59,37 +57,36 @@ namespace client.Commands
                             if (response.StatusCode.Equals(HttpStatusCode.OK))
                             {
                                 var responseUser = JsonSerializer.Deserialize<User>(response.Content.ReadAsStringAsync().Result);
-                                ClientConfiguration.UserInfo = user;
+                                ClientConfiguration.User = responseUser;
 
                                 Console.WriteLine("Successfully logged in!");
+                                ClientConfiguration.currentCommands = ClientConfiguration.HomeScreenCommands;
                                 return true; 
                             }
                             else
                             {
                                 Console.WriteLine(response);
-                                throw new Exception();
+                                throw new Exception("Failed to login.");
                             }
                         }
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine("An error occured while logging in....");
-                        ClientConfiguration.accessToken = "";
-                        ClientConfiguration.user = "user";
-                        return true;
+                        throw new Exception("An error occured while authenticaing.");
                     }
+                }
+                else
+                {
+                    throw new Exception("An error occured while authenticaing...");
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine("An error occured while authenticaing...");
+                Console.WriteLine(ex.Message);
                 ClientConfiguration.accessToken = "";
-                ClientConfiguration.user = "user";
+                ClientConfiguration.User = new();
                 return true;
             }
-
-            Console.WriteLine("Login sucessful...");
-            return true;
         }
     }
 }

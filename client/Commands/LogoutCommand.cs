@@ -1,9 +1,5 @@
 ﻿using client.Global;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using client.Models;
 
 namespace client.Commands
 {
@@ -13,12 +9,13 @@ namespace client.Commands
         {
         }
 
-        public override async Task<bool> execute()
+        public override Task<bool> Execute()
         {
             ClientConfiguration.accessToken = "";
-            ClientConfiguration.user = "user";
+            ClientConfiguration.User = new User() { UserName = "user" };
             Console.WriteLine("Successfully Logged Out!");
-            return true;
+            ClientConfiguration.currentCommands = ClientConfiguration.defaultcommands;
+            return Task.FromResult(true);
         }
     }
 }

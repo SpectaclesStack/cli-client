@@ -16,37 +16,47 @@ namespace client.Commands
         {
         }
 
-        public override async Task<bool> execute()
+        public override async Task<bool> Execute()
         {
-            using (HttpClient httpClient = new HttpClient())
+            try
             {
-                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, $"{ClientConfiguration.ApiDomain}/api/questions");
-                //request.Headers.Add("Authorization", ClientConfiguration.accessToken);
-
-                HttpResponseMessage response = httpClient.Send(request);
-
-                var questionsList = JsonSerializer.Deserialize<List<Question>>(response.Content.ReadAsStringAsync().Result);
-
-                ClientConfiguration.Questions = questionsList;
-
-                ClientConfiguration.questionsMap = new();
-                List<Command> commands = new();
-                
-                int count = 1;
-
-                foreach (var obj in ClientConfiguration.Questions)
+                using (HttpClient httpClient = new())
                 {
-                    ClientConfiguration.questionsMap[count] = obj;
-                    commands.Add(new SelectQuestionCommand(obj.Title, count.ToString()));
-                    count++;
+                    HttpRequestMessage request = new(HttpMethod.Get, $"{ClientConfiguration.ApiDomain}/api/questions");
+                    request.Headers.Add("Authorization", ClientConfiguration.accessToken);
+
+                    HttpResponseMessage response = httpClient.Send(request);
+
+                    List<Question>? questionsList = JsonSerializer.Deserialize<List<Question>>(response.Content.ReadAsStringAsync().Result);
+
+                    ClientConfiguration.Questions = questionsList;
+
+                    ClientConfiguration.questionsMap = [];
+                    List<Command> commands = [];
+
+                    int count = 1;
+
+                    ClientConfiguration.Questions?.ForEach(obj =>
+                    {
+                        ClientConfiguration.questionsMap[count] = obj;
+                        commands.Add(new SelectQuestionCommand(obj.Title, count.ToString()));
+                        count++;
+                    });
+
+                    commands.AddRange(ClientConfiguration.LogoutQuit);
+
+                    ClientConfiguration.currentCommands = commands;
                 }
 
-                commands.AddRange(ClientConfiguration.LogoutQuit);
-
-                ClientConfiguration.currentCommands = commands;
-
+            }
+            catch
+            {
+                Console.WriteLine("Error occured..Could Not retrieve questions.");
                 return true;
             }
+
+
+            return true;
         }
     }
 }

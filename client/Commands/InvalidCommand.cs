@@ -12,10 +12,10 @@ namespace client.Commands
         {
             
         }
-        public override async Task<bool> execute()
+        public override Task<bool> Execute()
         {
             Console.WriteLine(Name);
-            return true;
+            return Task.FromResult(true);
         }
     }
 }

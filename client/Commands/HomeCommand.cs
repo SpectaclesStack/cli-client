@@ -13,7 +13,7 @@ namespace client.Commands
         {
         }
 
-        public override async Task<bool> execute()
+        public override async Task<bool> Execute()
         {
             ClientConfiguration.currentCommands = ClientConfiguration.HomeScreenCommands;
             return true;

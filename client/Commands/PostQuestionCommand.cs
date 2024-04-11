@@ -16,7 +16,7 @@ namespace client.Commands
         {
         }
 
-        public override async Task<bool> execute()
+        public override async Task<bool> Execute()
         {
             using (HttpClient httpClient = new HttpClient())
             {
@@ -26,7 +26,7 @@ namespace client.Commands
                                 );
                 //request.Headers.Add("Authorization", ClientConfiguration.accessToken);
 
-                Question question = WelcomeOutput.GetQuestion();
+                Question question = ReaderWriter.GetQuestion();
 
                 string jsonBody = JsonSerializer.Serialize(question, new JsonSerializerOptions
                 {

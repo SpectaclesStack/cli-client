@@ -15,24 +15,32 @@ namespace client.Commands
         {
         }
 
-        public override async Task<bool> execute()
+        public override async Task<bool> Execute()
         {
-            Console.WriteLine(ClientConfiguration.questionsMap[int.Parse(Flag)]);
+            Console.WriteLine(ClientConfiguration.questionsMap?[int.Parse(Flag)]);
 
-
-            using (HttpClient httpClient = new HttpClient())
+            try
             {
-                HttpRequestMessage requestAnswers = new HttpRequestMessage(HttpMethod.Get, $"{ClientConfiguration.ApiDomain}/api/Answers");
-                //request.Headers.Add("Authorization", ClientConfiguration.accessToken);
+                using (HttpClient httpClient = new())
+                {
+                    HttpRequestMessage requestAnswers = new(HttpMethod.Get, $"{ClientConfiguration.ApiDomain}/api/Answers");
+                    requestAnswers.Headers.Add("Authorization", ClientConfiguration.accessToken);
 
-                HttpResponseMessage responseAnswers = httpClient.Send(requestAnswers);
-                var answersList = JsonSerializer.Deserialize<List<Answer>>(responseAnswers.Content.ReadAsStringAsync().Result);
-                ClientConfiguration.Answers = answersList;
+                    HttpResponseMessage responseAnswers = httpClient.Send(requestAnswers);
+                    var answersList = JsonSerializer.Deserialize<List<Answer>>(responseAnswers.Content.ReadAsStringAsync().Result);
+                    ClientConfiguration.Answers = answersList;
+                }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Failed to fetch answers to selected question.");
+                return true;
+            }
+            
 
             foreach (var answer in ClientConfiguration.Answers)
             {
-                if (answer.QuestionId.Equals(ClientConfiguration.questionsMap[int.Parse(Flag)].QuestionId))
+                if (answer.QuestionId.Equals(ClientConfiguration.questionsMap?[int.Parse(Flag)].QuestionId))
                 {
                     Console.WriteLine(answer);
                 }

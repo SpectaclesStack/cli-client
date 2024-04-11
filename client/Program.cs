@@ -9,7 +9,7 @@ namespace client
         private CommandHandler _handler = new();
         private async Task Start()
         {
-            WelcomeOutput.PrintWelcomeMessage();
+            ReaderWriter.PrintWelcomeMessage();
 
             bool continueExecution = true;
 
@@ -17,13 +17,13 @@ namespace client
             {
                 _handler.Commands = ClientConfiguration.currentCommands;
 
-                WelcomeOutput.PrintUserOptions(_handler.Commands);                
+                ReaderWriter.PrintUserOptions(_handler.Commands);                
 
-                var userSelection = WelcomeOutput.PrintInputPrompt();
+                var userSelection = ReaderWriter.PrintInputPrompt();
 
                 try
                 {
-                    continueExecution = await _handler.getCommand(userSelection).execute();
+                    continueExecution = await _handler.getCommand(userSelection).Execute();
                 }
                 catch (Exception ex)
                 {

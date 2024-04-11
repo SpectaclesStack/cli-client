@@ -12,42 +12,15 @@ namespace client.Global
         public const string Scope = "read:user";
         public const string GrantType = "urn:ietf:params:oauth:grant-type:device_code";
         public const string ApiDomain = "http://3.250.62.135:5033";
-        public static bool printdefaultCommandOptions = true;
 
-        public static string accessToken { get; set; }
-        public static string user { get; set; }
+        public static string? accessToken { get; set; }
 
-        public static User UserInfo { get; set; }
-
-
-        public static List<Command> ValidCommands = [
-            new LoginCommand(),
-            new LogoutCommand(),
-            new QuitCommand(),
-            new ViewQuestionsCommand(),
-            new PostQuestionCommand(),
-        ];
+        public static User? User { get; set; }
 
         public static List<Command> defaultcommands = [
             new LoginCommand(),
             new LogoutCommand(),
             new QuitCommand(),
-            new ViewQuestionsCommand(),
-            new PostQuestionCommand(),
-        ];
-
-        public static List<Command> QuestionsScreenCommands = [
-            new LogoutCommand(),
-            new QuitCommand(),
-            new PostQuestionCommand(),
-            //new SelectQuestion(),
-        ];
-
-        public static List<Command> QuestionScreenCommands = [
-            new LogoutCommand(),
-            new QuitCommand(),
-            new PostQuestionCommand(),
-            //new AnswerQuestion(),
         ];
 
         public static List<Command> HomeScreenCommands = [
@@ -65,13 +38,12 @@ namespace client.Global
             new QuitCommand(),
         ];
 
-
         public static List<Command> currentCommands = defaultcommands;
 
-        public static List<Question> Questions = [];
+        public static List<Question>? Questions = [];
 
-        public static List<Answer> Answers = [];
+        public static List<Answer>? Answers = [];
 
-        public static Dictionary<int, Question> questionsMap = new();
+        public static Dictionary<int, Question>? questionsMap = new();
     }
 }
