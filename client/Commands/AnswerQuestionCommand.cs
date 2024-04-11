@@ -52,7 +52,7 @@ namespace client.Commands
 
                 foreach (var answers in ClientConfiguration.Answers)
                 {
-                    if (answers.QuestionId.Equals(answer.QuestionId))
+                    if (answers.QuestionId == answer.QuestionId)
                     {
                         Console.WriteLine(answers);
                     }
