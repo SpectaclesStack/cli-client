@@ -26,7 +26,7 @@ namespace client.Models
 
         public override string ToString()
         {
-            return $"Title: {Title}\nBody: {Body}\nCreated At: {CreateAt}\n";
+            return $"Title: {Title}\nQuestion: {Body}\nCreated At: {CreateAt}\n";
         }
     }
 }
