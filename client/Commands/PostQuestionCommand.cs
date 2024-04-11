@@ -34,15 +34,11 @@ namespace client.Commands
                     IgnoreNullValues = false // Optional: Set to false to include null values
                 });
 
-                Console.WriteLine(jsonBody);
-
                 request.Content = new StringContent(jsonBody.ToString(), Encoding.UTF8, "application/json");
-
-                //Console.WriteLine(request.Content.ReadAsStringAsync().Result);
 
                 HttpResponseMessage response = httpClient.Send(request);
 
-                Console.WriteLine(response.Content.ReadAsStringAsync().Result);
+                //Console.WriteLine(response.Content.ReadAsStringAsync().Result);
 
                 return true;
             }

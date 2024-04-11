@@ -21,9 +21,6 @@ namespace client.Models
         [JsonPropertyName("createAt")]
         public DateTime CreateAt { get; set; }
 
-        //[JsonPropertyName("users")]
-        //public User User { get; set; }
-
         [JsonPropertyName("userid")]
         public int User { get; set; }
 

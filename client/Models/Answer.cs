@@ -9,7 +9,7 @@ namespace client.Models
 {
     public class Answer
     {
-        [JsonPropertyName("questionId")]
+        [JsonPropertyName("questionid")]
         public int QuestionId { get; set; }
 
         [JsonPropertyName("answerId")]
@@ -23,5 +23,10 @@ namespace client.Models
 
         [JsonPropertyName("createAt")]
         public DateTime CreateAt { get; set; }
+
+        public override string ToString()
+        {
+            return $"Answer: {AnswerString}\nCreated At: {CreateAt}\n";
+        }
     }
 }

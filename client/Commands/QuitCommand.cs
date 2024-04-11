@@ -1,4 +1,5 @@
-﻿using System;
+﻿using client.Global;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,7 +15,7 @@ namespace client.Commands
 
         public override bool execute()
         {
-            Console.WriteLine("Bye");
+            Console.WriteLine($"Bye {ClientConfiguration.user}.");
             return false;
         }
     }

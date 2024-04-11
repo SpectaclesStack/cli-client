@@ -51,6 +51,7 @@ namespace client.Global
         ];
 
         public static List<Command> HomeScreenCommands = [
+            new LoginCommand(),
             new LogoutCommand(),
             new QuitCommand(),
             new ViewQuestionsCommand(),
@@ -60,13 +61,16 @@ namespace client.Global
         public static List<Command> LogoutQuit = [
             new LoginCommand(),
             new LogoutCommand(),
+            new HomeCommand(),
             new QuitCommand(),
         ];
 
 
         public static List<Command> currentCommands = defaultcommands;
 
-        public static List<Question> Questions = new();
+        public static List<Question> Questions = [];
+
+        public static List<Answer> Answers = [];
 
         public static Dictionary<int, Question> questionsMap = new();
     }

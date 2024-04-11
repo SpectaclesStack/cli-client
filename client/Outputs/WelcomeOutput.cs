@@ -65,8 +65,8 @@ namespace client.Outputs
 
             User user = new User();
 
-            user.UserId = 31;
-            user.UserName = ClientConfiguration.user == null ? $"new usr {new Random().Next(10, 100)}" : ClientConfiguration.user;// "Anza-BBD";//$"{ClientConfiguration.user} {new Random().Next(10, 100)}";
+            user.UserId = 46;
+            user.UserName = ClientConfiguration.user == null ? $"new usr {new Random().Next(10, 100)}" : ClientConfiguration.user;
             user.CreateAt = DateTime.UtcNow;
 
             Question question = new Question();
@@ -92,7 +92,7 @@ namespace client.Outputs
 
             Answer answwer = new()
             {
-                AnswerId = 3,
+                AnswerId = 0,
                 UserId = ClientConfiguration.UserInfo == null ? 7 : ClientConfiguration.UserInfo.UserId,
                 QuestionId = 0,
                 AnswerString = answer,

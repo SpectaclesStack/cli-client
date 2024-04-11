@@ -29,7 +29,7 @@ namespace client.Commands
                 //request.Headers.Add("Authorization", ClientConfiguration.accessToken);
 
                 Answer answer = WelcomeOutput.GetAnswer();
-                answer.QuestionId = _questionId;
+                answer.QuestionId = ClientConfiguration.questionsMap[_questionId].QuestionId;
 
                 string jsonBody = JsonSerializer.Serialize(answer, new JsonSerializerOptions
                 {
@@ -37,15 +37,28 @@ namespace client.Commands
                     IgnoreNullValues = false // Optional: Set to false to include null values
                 });
 
-                Console.WriteLine(jsonBody);
-
                 request.Content = new StringContent(jsonBody.ToString(), Encoding.UTF8, "application/json");
-
-                //Console.WriteLine(request.Content.ReadAsStringAsync().Result);
 
                 HttpResponseMessage response = httpClient.Send(request);
 
-                Console.WriteLine(response.Content.ReadAsStringAsync().Result);
+                HttpRequestMessage requestAnswers = new HttpRequestMessage(HttpMethod.Get, $"{ClientConfiguration.ApiDomain}/api/Answers");
+                //requestAnswers.Headers.Add("Authorization", ClientConfiguration.accessToken);
+
+                HttpResponseMessage responseAnswers = httpClient.Send(requestAnswers);
+                var answersList = JsonSerializer.Deserialize<List<Answer>>(responseAnswers.Content.ReadAsStringAsync().Result);
+                ClientConfiguration.Answers = answersList;
+
+                Console.WriteLine(ClientConfiguration.questionsMap[_questionId]);
+
+                foreach (var answers in ClientConfiguration.Answers)
+                {
+                    if (answers.QuestionId.Equals(answer.QuestionId))
+                    {
+                        Console.WriteLine(answers);
+                    }
+                }
+
+                //Console.WriteLine(response.Content.ReadAsStringAsync().Result);
 
                 return true;
             }
