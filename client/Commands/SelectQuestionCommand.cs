@@ -15,7 +15,7 @@ namespace client.Commands
         {
         }
 
-        public override bool execute()
+        public override async Task<bool> execute()
         {
             Console.WriteLine(ClientConfiguration.questionsMap[int.Parse(Flag)]);
 

@@ -98,7 +98,7 @@ namespace client.Commands
             return success;
         }
 
-        public abstract bool execute();
+        public abstract Task<bool> execute();
 
     }
 }

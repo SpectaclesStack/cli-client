@@ -16,7 +16,7 @@ namespace client.Commands
         {
         }
 
-        public override bool execute()
+        public override async Task<bool> execute()
         {
             using (HttpClient httpClient = new HttpClient())
             {

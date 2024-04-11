@@ -18,47 +18,72 @@ namespace client.Commands
             _questionId = questionId;
         }
 
-        public override bool execute()
+        public override async Task<bool> execute()
         {
-            using (HttpClient httpClient = new HttpClient())
+            try
             {
-                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, $"{ClientConfiguration.ApiDomain}/api/answers");
-                //request.Headers.Add("Authorization", ClientConfiguration.accessToken);
-
-                Answer answer = WelcomeOutput.GetAnswer();
-                answer.QuestionId = ClientConfiguration.questionsMap[_questionId].QuestionId;
-
-                string jsonBody = JsonSerializer.Serialize(answer, new JsonSerializerOptions
+                using (HttpClient httpClient = new HttpClient())
                 {
-                    WriteIndented = false,
-                    IgnoreNullValues = false
-                });
+                    HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, $"{ClientConfiguration.ApiDomain}/api/answers");
+                    //request.Headers.Add("Authorization", ClientConfiguration.accessToken);
 
-                request.Content = new StringContent(jsonBody.ToString(), Encoding.UTF8, "application/json");
+                    Answer answer = WelcomeOutput.GetAnswer();
+                    answer.QuestionId = ClientConfiguration.questionsMap[_questionId].QuestionId;
 
-                HttpResponseMessage response = httpClient.Send(request);
-
-                Thread.Sleep(3000);
-
-                HttpRequestMessage requestAnswers = new HttpRequestMessage(HttpMethod.Get, $"{ClientConfiguration.ApiDomain}/api/Answers");
-                //requestAnswers.Headers.Add("Authorization", ClientConfiguration.accessToken);
-
-                HttpResponseMessage responseAnswers = httpClient.Send(requestAnswers);
-                var answersList = JsonSerializer.Deserialize<List<Answer>>(responseAnswers.Content.ReadAsStringAsync().Result);
-                ClientConfiguration.Answers = answersList;
-
-                Console.WriteLine(ClientConfiguration.questionsMap[_questionId]);
-
-                foreach (var answers in ClientConfiguration.Answers)
-                {
-                    if (answers.QuestionId == answer.QuestionId)
+                    string jsonBody = JsonSerializer.Serialize(answer, new JsonSerializerOptions
                     {
-                        Console.WriteLine(answers);
+                        WriteIndented = false,
+                        IgnoreNullValues = false
+                    });
+
+                    request.Content = new StringContent(jsonBody.ToString(), Encoding.UTF8, "application/json");
+
+                    HttpResponseMessage response = await httpClient.SendAsync(request);
+
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        Console.WriteLine($"Error: Something went wrong posting answer.");
+                        return true;
                     }
+
+                    HttpRequestMessage requestAnswers = new HttpRequestMessage(HttpMethod.Get, $"{ClientConfiguration.ApiDomain}/api/Answers");
+                    //requestAnswers.Headers.Add("Authorization", ClientConfiguration.accessToken);
+
+                    HttpResponseMessage responseAnswers = await httpClient.SendAsync(requestAnswers);
+
+                    if (!responseAnswers.IsSuccessStatusCode)
+                    {
+                        Console.WriteLine($"Error: Something went wrong posting answer.");
+                        return true;
+                    }
+
+                    var content = await responseAnswers.Content.ReadAsStringAsync();
+                    var answersList = JsonSerializer.Deserialize<List<Answer>>(content);
+
+                    ClientConfiguration.Answers = answersList;
+
+                    Console.WriteLine(ClientConfiguration.questionsMap[_questionId]);
+
+                    foreach (var answers in ClientConfiguration.Answers)
+                    {
+                        if (answers.QuestionId == answer.QuestionId)
+                        {
+                            Console.WriteLine(answers);
+                        }
+                    }
+
+                    return true;
                 }
 
-                return true;
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+                return true;
+
+            }
+
+           
         }
     }
 }

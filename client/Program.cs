@@ -7,7 +7,7 @@ namespace client
     internal class Program
     {
         private CommandHandler _handler = new();
-        private async void start()
+        private async Task Start()
         {
             WelcomeOutput.PrintWelcomeMessage();
 
@@ -32,9 +32,9 @@ namespace client
             }
         }
 
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            new Program().start();
+           await new Program().Start();
         }
     }
 }

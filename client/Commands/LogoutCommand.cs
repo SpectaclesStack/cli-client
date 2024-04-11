@@ -13,7 +13,7 @@ namespace client.Commands
         {
         }
 
-        public override bool execute()
+        public override async Task<bool> execute()
         {
             ClientConfiguration.accessToken = "";
             ClientConfiguration.user = "user";
