@@ -7,10 +7,8 @@ namespace client
     internal class Program
     {
         private CommandHandler _handler = new();
-        private void start()
+        private async void start()
         {
-            
-
             WelcomeOutput.PrintWelcomeMessage();
 
             bool continueExecution = true;
@@ -19,15 +17,13 @@ namespace client
             {
                 _handler.Commands = ClientConfiguration.currentCommands;
 
-                
-                WelcomeOutput.PrintUserOptions(_handler.Commands);
-                
+                WelcomeOutput.PrintUserOptions(_handler.Commands);                
 
                 var userSelection = WelcomeOutput.PrintInputPrompt();
 
                 try
                 {
-                    continueExecution = _handler.getCommand(userSelection).execute();
+                    continueExecution = await _handler.getCommand(userSelection).execute();
                 }
                 catch (Exception ex)
                 {
