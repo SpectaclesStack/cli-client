@@ -26,7 +26,7 @@ namespace client.Models
 
         public override string ToString()
         {
-            return $"Answer: {AnswerString}\nCreated At: {CreateAt}\n";
+            return $"Answer: {AnswerString}\nCreated At: {CreateAt.ToLocalTime()}\n";
         }
     }
 }
