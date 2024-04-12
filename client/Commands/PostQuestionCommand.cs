@@ -24,7 +24,7 @@ namespace client.Commands
                                 HttpMethod.Post,
                                 $"{ClientConfiguration.ApiDomain}/api/questions"
                                 );
-                //request.Headers.Add("Authorization", ClientConfiguration.accessToken);
+                request.Headers.Add("Authorization", ClientConfiguration.accessToken);
 
                 Question question = ReaderWriter.GetQuestion();
 

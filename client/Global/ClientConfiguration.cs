@@ -12,6 +12,7 @@ namespace client.Global
         public const string Scope = "read:user";
         public const string GrantType = "urn:ietf:params:oauth:grant-type:device_code";
         public const string ApiDomain = "http://3.250.62.135:5033";
+        //public const string ApiDomain = "http://localhost:5033";
 
         public static string? accessToken { get; set; }
 
